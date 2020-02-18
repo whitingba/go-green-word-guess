@@ -43,22 +43,39 @@ document.onkeyup = function (event) {
     var userKeyPress = event.key;
     //    console.log(userKeyPress);
     //only want to count guesses that are a - z
-    if (userGuess.charCodeAt(0) >= 97 && userGuess.charCodeAt(0) <= 122) {
+    if (userKeyPress.charCodeAt(0) >= 97 && userKeyPress.charCodeAt(0) <= 122) {
+        //push all user guesses to the keysPressed array
         keysPressed.push(userKeyPress);
-        document.getElementById("guessBank").innerHTML = `<h2>Letters guessed: ${keysPressed.join(", ")}</h2>`;
+        // letter bank for the letters that have been guessed
+        document.getElementById("guessBank").innerHTML = `<h3>Letters guessed: ${keysPressed.join(", ")}</h3>`;
+        //reduce number of guesses by one
+        guessesRemaining--;
+        // update the HTML with their number of guesses remaining
+        document.getElementById("guessesRemain").innerHTML = `<h4>Remaining guesses: ${guessesRemaining}</h4>`;
+        // clear any messages in the text box
+        document.getElementById("winningText").innerHTML = "";
+    } else {
+        //if a key other than a thru z is chosen a message will pop up
+        document.getElementById("winningText").innerHTML = "<h2 style='color: red' >Please only use letters from a to z!</></h2>";
     }
 
-
-
+    //loop through the current random word
     for (var j = 0; j < word.length; j++) {
+        //if one of the letters matches the key press
         if (word[j] === userKeyPress) {
+            //update the answer array with that key press
             answerArray[j] = userKeyPress;
+            // any display it on the screen
             document.getElementById("wordDisplay").innerHTML = `<h1>${answerArray.join(" ")}</h1>`;
+            //reduce the remaining letters to guess by 1
             remainingLetters--;
-
+            // if remaining letters is equal to 0
             if (remainingLetters === 0) {
+                //give a message on the screen letting them know that got it right.
                 document.getElementById("winningText").innerHTML = `<h2> You guessed the word <u>${word}</u> correctly</h2>`;
+                //otherwise if there is one letter to guess
             } else if (remainingLetters === 1) {
+                // give them an encouraging message
                 document.getElementById("winningText").innerHTML = "<h2>Only one letter to go, don't give up!</h2>";
             }
         }
